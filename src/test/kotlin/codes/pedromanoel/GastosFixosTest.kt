@@ -30,7 +30,7 @@ private val TRANSACAO_2_ABR = GASTO_2.naDataMaisProximaA(ABR_2020.atDay(1))
 internal class GastosFixosTest {
     // Março
     // Seg  Ter  Qua  Qui  Sex  Sab  Dom
-    //  23   24   25   26   27   28 |  1
+    //  24   25   26   27   28   29 |  1
     //   2    3    4    5    6    7    8
     //   9   10   11   12   13   14   15
     //  16   17   18   19   20   21   22
