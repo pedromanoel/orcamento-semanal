@@ -8,8 +8,8 @@ class GastosFixos {
     fun adicionaGasto(gastoFixo: GastoFixo) =
         gastosFixos.add(gastoFixo)
 
-    fun transacoesDaSemana(hoje: LocalDate) =
-        Semana.doDia(hoje).transacoesDaSemanaParaGastos(gastosFixos)
+    fun transacoesDaSemana(data: LocalDate) =
+        Semana.daData(data).transacoesDaSemanaDado(gastosFixos)
 
     fun limpar() =
         gastosFixos.clear()
