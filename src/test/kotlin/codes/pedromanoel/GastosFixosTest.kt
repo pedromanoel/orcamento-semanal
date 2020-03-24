@@ -6,28 +6,36 @@ import org.junit.jupiter.api.Test
 import java.time.Month
 import java.time.YearMonth
 
-private val MARCO_2020 = YearMonth.of(2020, Month.MARCH)
+private val FEV_2020 = YearMonth.of(2020, Month.FEBRUARY)
+private val MAR_2020 = YearMonth.of(2020, Month.MARCH)
+private val ABR_2020 = YearMonth.of(2020, Month.APRIL)
 
-private val DOIS_DE_MARCO = MARCO_2020.atDay(2)
-private val OITO_DE_MARCO = MARCO_2020.atDay(8)
+private val MAR_1 = MAR_2020.atDay(1)
+private val MAR_2 = MAR_2020.atDay(2)
+private val MAR_8 = MAR_2020.atDay(8)
+private val MAR_31 = MAR_2020.atDay(31)
 
-private val GASTO_UM_MARCO = GastoFixo("Tarifa Bradesco", 1, 34_00)
-private val GASTO_DOIS_MARCO = GastoFixo("Luz", 2, 55_43)
-private val GASTO_OITO_MARCO = GastoFixo("Água", 8, 49_81)
-private val GASTO_NOVE_MARCO = GastoFixo("Internet", 9, 89_99)
+private val GASTO_1 = GastoFixo("Tarifa Bradesco", 1, 34_00)
+private val GASTO_2 = GastoFixo("Luz", 2, 55_43)
+private val GASTO_8 = GastoFixo("Água", 8, 49_81)
+private val GASTO_9 = GastoFixo("Internet", 9, 89_99)
+private val GASTO_29 = GastoFixo("Empréstimo", 29, 1500_00)
 
-private val TRANSACAO_DOIS_MARCO = Transacao("Luz", DOIS_DE_MARCO, 55_43)
-private val TRANSACAO_OITO_MARCO = Transacao("Água", OITO_DE_MARCO, 49_81)
+private val TRANSACAO_29_FEV = GASTO_29.naDataMaisProximaA(FEV_2020.atDay(1))
+private val TRANSACAO_2_MAR = GASTO_2.naDataMaisProximaA(MAR_2020.atDay(1))
+private val TRANSACAO_8_MAR = GASTO_8.naDataMaisProximaA(MAR_2020.atDay(1))
+private val TRANSACAO_1_ABR = GASTO_1.naDataMaisProximaA(ABR_2020.atDay(1))
+private val TRANSACAO_2_ABR = GASTO_2.naDataMaisProximaA(ABR_2020.atDay(1))
 
 internal class GastosFixosTest {
     // Março
     // Seg  Ter  Qua  Qui  Sex  Sab  Dom
-    //                                 1
+    //  23   24   25   26   27   28 |  1
     //   2    3    4    5    6    7    8
     //   9   10   11   12   13   14   15
     //  16   17   18   19   20   21   22
     //  23   24   25   26   27   28   29
-    //  30   31
+    //  30   31 |  1    2    3    4    5
 
     private val gastosFixos = GastosFixos()
 
@@ -37,22 +45,37 @@ internal class GastosFixosTest {
     }
 
     @Test
-    internal fun `retorna transacoes do início da semana` () {
-        gastosFixos.adicionaGasto(GASTO_UM_MARCO)
-        gastosFixos.adicionaGasto(GASTO_DOIS_MARCO)
+    internal fun `retorna transacoes do mês anterior`() {
+        gastosFixos.adicionaGasto(GASTO_29)
 
-        val hoje = DOIS_DE_MARCO
-        assertThat(gastosFixos.transacoesDaSemana(hoje))
-            .containsExactly(TRANSACAO_DOIS_MARCO)
+        assertThat(gastosFixos.transacoesDaSemana(MAR_1))
+            .containsExactly(TRANSACAO_29_FEV)
+    }
+
+    @Test
+    internal fun `retorna transacoes do próximo mês`() {
+        gastosFixos.adicionaGasto(GASTO_1)
+        gastosFixos.adicionaGasto(GASTO_2)
+
+        assertThat(gastosFixos.transacoesDaSemana(MAR_31))
+            .containsExactly(TRANSACAO_1_ABR, TRANSACAO_2_ABR)
+    }
+
+    @Test
+    internal fun `retorna transacoes do início da semana`() {
+        gastosFixos.adicionaGasto(GASTO_1)
+        gastosFixos.adicionaGasto(GASTO_2)
+
+        assertThat(gastosFixos.transacoesDaSemana(MAR_2))
+            .containsExactly(TRANSACAO_2_MAR)
     }
 
     @Test
     internal fun `retorna transacoes do fim da semana`() {
-        gastosFixos.adicionaGasto(GASTO_OITO_MARCO)
-        gastosFixos.adicionaGasto(GASTO_NOVE_MARCO)
+        gastosFixos.adicionaGasto(GASTO_8)
+        gastosFixos.adicionaGasto(GASTO_9)
 
-        val hoje = OITO_DE_MARCO
-        assertThat(gastosFixos.transacoesDaSemana(hoje))
-            .containsExactly(TRANSACAO_OITO_MARCO)
+        assertThat(gastosFixos.transacoesDaSemana(MAR_8))
+            .containsExactly(TRANSACAO_8_MAR)
     }
 }
