@@ -17,15 +17,15 @@ private val MAR_31 = MAR_2020.atDay(31)
 
 private val GASTO_1 = GastoFixo("Tarifa Bradesco", 1, 34_00)
 private val GASTO_2 = GastoFixo("Luz", 2, 55_43)
-private val GASTO_8 = GastoFixo("Água", 8, 49_81)
+private val GASTO_6 = GastoFixo("Água", 6, 49_81)
 private val GASTO_9 = GastoFixo("Internet", 9, 89_99)
-private val GASTO_29 = GastoFixo("Empréstimo", 29, 1500_00)
+private val GASTO_27 = GastoFixo("Empréstimo", 27, 1500_00)
 
-private val TRANSACAO_29_FEV = GASTO_29.naDataMaisProximaA(FEV_2020.atDay(1))
-private val TRANSACAO_2_MAR = GASTO_2.naDataMaisProximaA(MAR_2020.atDay(1))
-private val TRANSACAO_8_MAR = GASTO_8.naDataMaisProximaA(MAR_2020.atDay(1))
-private val TRANSACAO_1_ABR = GASTO_1.naDataMaisProximaA(ABR_2020.atDay(1))
-private val TRANSACAO_2_ABR = GASTO_2.naDataMaisProximaA(ABR_2020.atDay(1))
+private val TRANSACAO_27_FEV = GASTO_27.naDataUtilMaisProximaA(FEV_2020.atDay(1))
+private val TRANSACAO_2_MAR = GASTO_2.naDataUtilMaisProximaA(MAR_2020.atDay(1))
+private val TRANSACAO_6_MAR = GASTO_6.naDataUtilMaisProximaA(MAR_2020.atDay(1))
+private val TRANSACAO_1_ABR = GASTO_1.naDataUtilMaisProximaA(ABR_2020.atDay(1))
+private val TRANSACAO_2_ABR = GASTO_2.naDataUtilMaisProximaA(ABR_2020.atDay(1))
 
 internal class GastosFixosTest {
     // Março
@@ -46,10 +46,10 @@ internal class GastosFixosTest {
 
     @Test
     internal fun `retorna transacoes do mês anterior`() {
-        gastosFixos.adicionaGasto(GASTO_29)
+        gastosFixos.adicionaGasto(GASTO_27)
 
         assertThat(gastosFixos.transacoesDaSemana(MAR_1))
-            .containsExactly(TRANSACAO_29_FEV)
+            .containsExactly(TRANSACAO_27_FEV)
     }
 
     @Test
@@ -72,10 +72,10 @@ internal class GastosFixosTest {
 
     @Test
     internal fun `retorna transacoes do fim da semana`() {
-        gastosFixos.adicionaGasto(GASTO_8)
+        gastosFixos.adicionaGasto(GASTO_6)
         gastosFixos.adicionaGasto(GASTO_9)
 
         assertThat(gastosFixos.transacoesDaSemana(MAR_8))
-            .containsExactly(TRANSACAO_8_MAR)
+            .containsExactly(TRANSACAO_6_MAR)
     }
 }
