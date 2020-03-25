@@ -8,7 +8,10 @@ import java.time.YearMonth
 private val FEV_2020 = YearMonth.of(2020, Month.FEBRUARY)
 private val MAR_2020 = YearMonth.of(2020, Month.MARCH)
 
-private val GASTO_28 = GastoFixo("Gasto", 28, 1_00)
+private val SEMANA_24_FEV = Semana.daData(FEV_2020.atDay(24))
+private val SEMANA_23_MAR = Semana.daData(MAR_2020.atDay(23))
+
+private val GASTO_28 = GastoFixo("Gasto", 1_00, 28)
 
 internal class GastoFixoTest {
     // Março
@@ -21,18 +24,18 @@ internal class GastoFixoTest {
     //  30   31 |  1    2    3    4    5
 
     @Test
-    internal fun `cria transação com vencimento em dia útil`() {
+    internal fun `cria transação com mesmo dia quando vencimento é dia útil`() {
         val dataDaTransacao = GASTO_28
-            .naDataUtilMaisProximaA(FEV_2020.atDay(1))
+            .naDataUtilMaisProximaA(SEMANA_24_FEV)
             .data
 
         assertThat(dataDaTransacao).isEqualTo(FEV_2020.atDay(28))
     }
 
     @Test
-    internal fun `cria transação com vencimento em fim de semana`() {
+    internal fun `cria transação no próximo dia útil`() {
         val dataDaTransacao = GASTO_28
-            .naDataUtilMaisProximaA(MAR_2020.atDay(1))
+            .naDataUtilMaisProximaA(SEMANA_23_MAR)
             .data
 
         assertThat(dataDaTransacao).isEqualTo(MAR_2020.atDay(30))

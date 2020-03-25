@@ -1,23 +1,18 @@
 package codes.pedromanoel
 
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.temporal.ChronoField
-import java.time.temporal.Temporal
-import java.time.temporal.TemporalAdjuster
-import java.time.temporal.TemporalAdjusters.next
 
 data class GastoFixo(
     val nome: String,
-    val diaDoVencimento: Int,
-    val valor: Long
-) {
+    val valor: Long,
+    val diaDoVencimento: Int
+) : Gasto {
 
-    fun naDataUtilMaisProximaA(data: LocalDate) =
+    override fun naDataUtilMaisProximaA(semana: Semana) =
         Transacao(
             nome,
-            mesMaisProximo(data)
+            mesMaisProximo(semana.inicioDaSemana)
                 .atDay(diaDoVencimento)
                 .with(ProximoDiaUtil()),
             valor
@@ -29,18 +24,4 @@ data class GastoFixo(
         else
             YearMonth.from(data)
 
-    private inner class ProximoDiaUtil :
-        TemporalAdjuster {
-
-        override fun adjustInto(temporal: Temporal): Temporal =
-            when (diaDaSemana(temporal)) {
-                DayOfWeek.SATURDAY, DayOfWeek.SUNDAY ->
-                    temporal.with(next(DayOfWeek.MONDAY))
-                else ->
-                    temporal
-            }
-
-        private fun diaDaSemana(temporal: Temporal) =
-            DayOfWeek.of(temporal.get(ChronoField.DAY_OF_WEEK))
-    }
 }
