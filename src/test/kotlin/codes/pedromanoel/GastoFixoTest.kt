@@ -2,14 +2,6 @@ package codes.pedromanoel
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import java.time.Month
-import java.time.YearMonth
-
-private val FEV_2020 = YearMonth.of(2020, Month.FEBRUARY)
-private val MAR_2020 = YearMonth.of(2020, Month.MARCH)
-
-private val SEMANA_24_FEV = Semana.daData(FEV_2020.atDay(24))
-private val SEMANA_23_MAR = Semana.daData(MAR_2020.atDay(23))
 
 private val GASTO_28 = GastoFixo("Gasto", 1_00, 28)
 
