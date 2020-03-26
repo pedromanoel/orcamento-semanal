@@ -22,7 +22,7 @@ class AppTest {
 
     @AfterEach
     internal fun tearDown() {
-        app.server.stop()
+        app.stop()
     }
 
     @Test

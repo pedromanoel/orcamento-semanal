@@ -11,7 +11,7 @@ import java.io.File
 class App(
     private val config: Configuration
 ) {
-    val server: Javalin = Javalin.create()
+    private val server: Javalin = Javalin.create()
 
     private val port by intType
 
@@ -22,6 +22,10 @@ class App(
             }
             .start(config[port])
     }
+
+    fun stop() {
+        server.stop()
+    }
 }
 
 fun main(args: Array<String>) {
@@ -29,5 +33,14 @@ fun main(args: Array<String>) {
             fromOptionalFile(File("./application.properties"))
 
     val app = App(config)
+
+    shutdownHook {
+        app.stop()
+    }
+
     app.start()
+}
+
+private fun shutdownHook(shutdownCallback: () -> Unit) {
+    Runtime.getRuntime().addShutdownHook(Thread(shutdownCallback))
 }
