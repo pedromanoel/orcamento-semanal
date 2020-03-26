@@ -10,9 +10,11 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+private const val PORT_NUMBER = "3000"
+
 class AppTest {
 
-    private val config = ConfigurationMap("port" to "3000")
+    private val config = ConfigurationMap("port" to PORT_NUMBER)
     private val app = App(config)
 
     @BeforeEach
@@ -26,8 +28,8 @@ class AppTest {
     }
 
     @Test
-    fun `return root path`() {
-        val response = Unirest.get("http://localhost:3000").asString()
+    fun `inicia o servidor na porta especificada na configuração`() {
+        val response = Unirest.get("http://localhost:$PORT_NUMBER").asString()
 
         assertThat(response.status).isEqualTo(200)
         assertThat(response.body).isEqualTo("OK")
