@@ -1,4 +1,4 @@
-package codes.pedromanoel
+package codes.pedromanoel.domain
 
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -20,13 +20,15 @@ data class Semana private constructor(
     private fun paraTransacao(gastoFixo: Gasto) =
         gastoFixo.naDataUtilMaisProximaA(this)
 
-    fun proxima() = daData(fimDaSemana.plusDays(1))
+    fun proxima() =
+        daData(fimDaSemana.plusDays(1))
 
     companion object {
-        fun daData(data: LocalDate) = Semana(
-            data.with(previousOrSame(DayOfWeek.MONDAY)),
-            data.with(nextOrSame(DayOfWeek.SUNDAY))
-        )
+        fun daData(data: LocalDate) =
+            Semana(
+                data.with(previousOrSame(DayOfWeek.MONDAY)),
+                data.with(nextOrSame(DayOfWeek.SUNDAY))
+            )
     }
 }
 

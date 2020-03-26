@@ -1,4 +1,4 @@
-package codes.pedromanoel
+package codes.pedromanoel.domain
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -63,7 +63,10 @@ internal class RetratoTest {
             retrato.adicionaGasto(GASTO_FIXO_2)
 
             assertThat(retrato.transacoesDaSemana(MAR_31))
-                .containsExactly(TRANSACAO_1_ABR, TRANSACAO_2_ABR)
+                .containsExactly(
+                    TRANSACAO_1_ABR,
+                    TRANSACAO_2_ABR
+                )
         }
 
         @Test
