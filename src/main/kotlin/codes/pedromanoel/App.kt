@@ -3,13 +3,31 @@
  */
 package codes.pedromanoel
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello world."
-        }
+import com.natpryce.konfig.*
+import com.natpryce.konfig.ConfigurationProperties.Companion.fromOptionalFile
+import io.javalin.Javalin
+import java.io.File
+
+class App(
+    private val config: Configuration
+) {
+    val server: Javalin = Javalin.create()
+
+    private val port by intType
+
+    fun start() {
+        server
+            .get("/") { ctx ->
+                ctx.result("OK")
+            }
+            .start(config[port])
+    }
 }
 
 fun main(args: Array<String>) {
-    println(App().greeting)
+    val config: Configuration = EnvironmentVariables() overriding
+            fromOptionalFile(File("./application.properties"))
+
+    val app = App(config)
+    app.start()
 }
