@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-
 private val GASTO_FIXO_1 = GastoFixo("Tarifa Bradesco", 34_00, 1)
 private val GASTO_FIXO_2 = GastoFixo("Luz", 55_43, 2)
 private val GASTO_FIXO_6 = GastoFixo("Água", 49_81, 6)
