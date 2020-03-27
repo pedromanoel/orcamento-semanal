@@ -13,12 +13,16 @@ class App(
 ) {
     private val server: Javalin = Javalin.create()
 
-    private val port by intType
+    private val port =
+        Key("port", intType)
+    private val showJavalinBanner =
+        Key("javalin.show-javalin-banner", booleanType)
 
     fun start() {
+        server.config.showJavalinBanner = config[showJavalinBanner]
         server
             .get("/") { ctx ->
-                ctx.result("OK")
+                ctx.render("home.peb")
             }
             .start(config[port])
     }

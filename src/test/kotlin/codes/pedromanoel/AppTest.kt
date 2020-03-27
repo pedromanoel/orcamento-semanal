@@ -14,7 +14,11 @@ private const val PORT_NUMBER = "3000"
 
 class AppTest {
 
-    private val config = ConfigurationMap("port" to PORT_NUMBER)
+    private val config = ConfigurationMap(
+        "port" to PORT_NUMBER,
+        "javalin.show-javalin-banner" to "false"
+    )
+
     private val app = App(config)
 
     @BeforeEach
@@ -32,6 +36,12 @@ class AppTest {
         val response = Unirest.get("http://localhost:$PORT_NUMBER").asString()
 
         assertThat(response.status).isEqualTo(200)
-        assertThat(response.body).isEqualTo("OK")
+    }
+
+    @Test
+    internal fun `renderiza home page`() {
+        val response = Unirest.get("http://localhost:$PORT_NUMBER").asString()
+
+        assertThat(response.body).contains("<title>Orçamento Semanal")
     }
 }

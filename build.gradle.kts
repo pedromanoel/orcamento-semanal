@@ -14,6 +14,7 @@ dependencies {
 
     implementation("com.natpryce:konfig:1.6.10.0")
     implementation("io.javalin:javalin:3.7.0")
+    implementation("io.pebbletemplates:pebble:3.1.2")
     implementation("org.slf4j:slf4j-simple:1.7.28")
 
     testImplementation("org.assertj:assertj-core:3.15.0")
