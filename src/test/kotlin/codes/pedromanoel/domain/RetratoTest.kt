@@ -4,6 +4,9 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
+import java.time.LocalDate
 
 private val GASTO_FIXO_1 = GastoFixo("Tarifa Bradesco", 34_00, 1)
 private val GASTO_FIXO_2 = GastoFixo("Luz", 55_43, 2)
@@ -19,9 +22,6 @@ private val TRANSACAO_6_MAR = GASTO_FIXO_6.naDataUtilMaisProximaA(SEMANA_2_MAR)
 private val TRANSACAO_1_ABR = GASTO_FIXO_1.naDataUtilMaisProximaA(SEMANA_30_MAR)
 private val TRANSACAO_2_ABR = GASTO_FIXO_2.naDataUtilMaisProximaA(SEMANA_30_MAR)
 
-private val TRANSACAO_FIXA_MAR_1 = GASTO_VARIAVEL_1.naDataUtilMaisProximaA(SEMANA_24_FEV)
-private val TRANSACAO_FIXA_MAR_6 = GASTO_VARIAVEL_1.naDataUtilMaisProximaA(SEMANA_2_MAR)
-
 internal class RetratoTest {
 
     private val retrato = Retrato()
@@ -34,14 +34,24 @@ internal class RetratoTest {
     @Nested
     inner class GastosVariaveis {
 
-        @Test
-        internal fun `transacao aparece em todas as semanas no último dia útil da semana`() {
+        @ParameterizedTest
+        @ValueSource(
+            strings = [
+                "2020-02-24",
+                "2020-03-02",
+                "2020-03-09",
+                "2020-03-16",
+                "2020-03-23",
+                "2020-03-30"]
+        )
+        internal fun `transacao aparece na segunda-feira`(
+            inicioDaSemana: LocalDate
+        ) {
             retrato.adicionaGasto(GASTO_VARIAVEL_1)
 
-            assertThat(retrato.transacoesDaSemana(MAR_1))
-                .contains(TRANSACAO_FIXA_MAR_1)
-            assertThat(retrato.transacoesDaSemana(MAR_2))
-                .contains(TRANSACAO_FIXA_MAR_6)
+            assertThat(retrato.transacoesDaSemana(inicioDaSemana))
+                .extracting("data")
+                .contains(inicioDaSemana)
         }
     }
 

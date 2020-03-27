@@ -5,20 +5,20 @@ import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters.nextOrSame
 import java.time.temporal.TemporalAdjusters.previousOrSame
 
-data class Semana private constructor(
+data class Semana(
     val inicioDaSemana: LocalDate,
     val fimDaSemana: LocalDate
 ) {
-    fun transacoesDaSemanaDado(gastosFixos: List<Gasto>) =
-        gastosFixos
-            .map(this::paraTransacao)
-            .filter { this.dentroDaSemana(it.data) }
+    fun transacoesDaSemanaDado(gastos: List<Gasto>) =
+        gastos
+            .map { gasto -> transacaoPara(gasto) }
+            .filter { transacao -> dentroDaSemana(transacao.data) }
+
+    private fun transacaoPara(it: Gasto) =
+        it.naDataUtilMaisProximaA(this)
 
     fun dentroDaSemana(data: LocalDate) =
         data >= inicioDaSemana && data < fimDaSemana
-
-    private fun paraTransacao(gastoFixo: Gasto) =
-        gastoFixo.naDataUtilMaisProximaA(this)
 
     fun proxima() =
         daData(fimDaSemana.plusDays(1))
