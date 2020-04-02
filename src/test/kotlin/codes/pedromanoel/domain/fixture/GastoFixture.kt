@@ -1,4 +1,7 @@
-package codes.pedromanoel.domain
+package codes.pedromanoel.domain.fixture
+
+import codes.pedromanoel.domain.GastoFixo
+import codes.pedromanoel.domain.GastoVariavelSemanal
 
 const val NOME = "Gasto"
 const val VALOR = 10_00

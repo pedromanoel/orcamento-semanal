@@ -1,6 +1,8 @@
-package codes.pedromanoel.domain
+package codes.pedromanoel.domain.fixture
 
-import codes.pedromanoel.domain.GastoFixture.Factory.umGasto
+import codes.pedromanoel.domain.GastoFixo
+import codes.pedromanoel.domain.GastoVariavelSemanal
+import codes.pedromanoel.domain.fixture.GastoFixture.Factory.umGasto
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

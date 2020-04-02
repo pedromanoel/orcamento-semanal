@@ -1,5 +1,7 @@
 package codes.pedromanoel.domain
 
+import codes.pedromanoel.domain.fixture.FEV_2020
+import codes.pedromanoel.domain.fixture.MAR_2020
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -23,11 +25,17 @@ internal class SemanaTest {
 
     @Test
     internal fun `testa se data está dentro da semana`() {
-        val semana = Semana.daData(MAR_2)
+        val semana = Semana.daData(MAR_2020.atDay(2))
 
-        val dentroDaSemana = 0.rangeTo(6L)
-            .map(MAR_2::plusDays)
-            .map(semana::dentroDaSemana)
+        val dentroDaSemana = listOf(
+            MAR_2020.atDay(2),
+            MAR_2020.atDay(3),
+            MAR_2020.atDay(4),
+            MAR_2020.atDay(5),
+            MAR_2020.atDay(6),
+            MAR_2020.atDay(7),
+            MAR_2020.atDay(8)
+        ).map(semana::dentroDaSemana)
 
         assertThat(dentroDaSemana)
             .containsExactly(
@@ -43,7 +51,7 @@ internal class SemanaTest {
 
     @Test
     internal fun `cria a próxima semana`() {
-        val semana : Semana = Semana.daData(MAR_2).proxima()
+        val semana: Semana = Semana.daData(MAR_2020.atDay(2)).proxima()
 
         assertThat(semana.inicioDaSemana).isEqualTo(MAR_2020.atDay(9))
         assertThat(semana.fimDaSemana).isEqualTo(MAR_2020.atDay(15))

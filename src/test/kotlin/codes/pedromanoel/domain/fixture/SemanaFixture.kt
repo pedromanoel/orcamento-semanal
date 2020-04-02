@@ -1,4 +1,6 @@
-package codes.pedromanoel.domain
+package codes.pedromanoel.domain.fixture
+
+import codes.pedromanoel.domain.Semana
 
 // Março
 // Seg  Ter  Qua  Qui  Sex  Sab  Dom
