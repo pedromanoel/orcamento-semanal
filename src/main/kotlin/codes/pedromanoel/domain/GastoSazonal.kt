@@ -1,12 +1,14 @@
 package codes.pedromanoel.domain
 
-class GastoSazonal : Gasto {
+data class GastoSazonal(
+    val nome: String,
+    val valor: Int,
+    val periodoEmMeses: Int
+) : Gasto {
     override fun naDataUtilMaisProximaDaSemana(semana: Semana): Transacao {
         TODO("Not yet implemented")
     }
 
     override val totalMensal: Int
-        get() {
-            TODO("Not yet implemented")
-        }
+        get() = valor / periodoEmMeses
 }

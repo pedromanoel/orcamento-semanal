@@ -8,11 +8,8 @@ class Retrato {
 
     private val gastos = ArrayList<Gasto>()
 
-    fun adicionaGasto(gastoFixo: GastoFixo) =
-        gastos.add(gastoFixo)
-
-    fun adicionaGasto(gastoVariavelSemanal: GastoVariavelSemanal) =
-        gastos.add(gastoVariavelSemanal)
+    fun adicionaGasto(gasto: Gasto) =
+        gastos.add(gasto)
 
     fun transacoesDaSemana(data: LocalDate) =
         Semana.daData(data).transacoesDaSemanaDado(gastos)

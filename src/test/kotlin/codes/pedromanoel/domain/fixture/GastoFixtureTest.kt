@@ -1,6 +1,7 @@
 package codes.pedromanoel.domain.fixture
 
 import codes.pedromanoel.domain.GastoFixo
+import codes.pedromanoel.domain.GastoSazonal
 import codes.pedromanoel.domain.GastoVariavelSemanal
 import codes.pedromanoel.domain.fixture.GastoFixture.Factory.umGasto
 import org.assertj.core.api.Assertions.assertThat
@@ -18,6 +19,12 @@ internal class GastoFixtureTest {
     internal fun `cria gasto variável com valores padrões`() {
         assertThat(umGasto().gastoVariavelSemanal)
             .isEqualTo(GastoVariavelSemanal(NOME, VALOR))
+    }
+
+    @Test
+    internal fun `cria gasto sazonal com valores padrões`() {
+        assertThat(umGasto().gastoSazonal)
+            .isEqualTo(GastoSazonal(NOME, VALOR, PERIODO_EM_MESES))
     }
 
     @Test
@@ -39,5 +46,16 @@ internal class GastoFixtureTest {
                 .comValor(15_00)
                 .gastoVariavelSemanal
         ).isEqualTo(GastoVariavelSemanal("Um nome diferente", 15_00))
+    }
+
+    @Test
+    internal fun `substitui parâmetros do gasto sazonal`() {
+        assertThat(
+            umGasto()
+                .comNome("Um nome diferente")
+                .comValor(15_00)
+                .comPeriodoDe(3)
+                .gastoSazonal
+        ).isEqualTo(GastoSazonal("Um nome diferente", 15_00, 3))
     }
 }

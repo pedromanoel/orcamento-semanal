@@ -3,11 +3,7 @@ package codes.pedromanoel.domain
 import codes.pedromanoel.domain.fixture.GastoFixture.Factory.umGasto
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.ValueSource
-import java.time.LocalDate
 
 internal class RetratoTest {
 
@@ -18,48 +14,22 @@ internal class RetratoTest {
         retrato.limpar()
     }
 
-    @Nested
-    inner class GastosVariaveis {
+    @Test
+    internal fun `total mensal é calculado com gastos fixos, variáveis e sazonais`() {
+        retrato.adicionaGasto(umGasto().comValor(1000).gastoVariavelSemanal)
+        retrato.adicionaGasto(umGasto().comValor(2000).gastoVariavelSemanal)
 
-        @ParameterizedTest
-        @ValueSource(
-            strings = [
-                "2020-02-24",
-                "2020-03-02",
-                "2020-03-09",
-                "2020-03-16",
-                "2020-03-23",
-                "2020-03-30"]
-        )
-        internal fun `transacao aparece na segunda-feira`(
-            inicioDaSemana: LocalDate
-        ) {
-            retrato.adicionaGasto(umGasto().noDiaDoVencimento(1).gastoVariavelSemanal)
+        retrato.adicionaGasto(umGasto().comValor(300).gastoFixo)
+        retrato.adicionaGasto(umGasto().comValor(400).gastoFixo)
 
-            assertThat(retrato.transacoesDaSemana(inicioDaSemana))
-                .extracting("data")
-                .contains(inicioDaSemana)
-        }
+        retrato.adicionaGasto(umGasto().comValor(1200).comPeriodoDe(12).gastoSazonal)
+        retrato.adicionaGasto(umGasto().comValor(1200).comPeriodoDe(24).gastoSazonal)
 
-        @Test
-        internal fun `total mensal é computado somando as semanas`() {
-            retrato.adicionaGasto(umGasto().comValor(1000).gastoVariavelSemanal)
-            retrato.adicionaGasto(umGasto().comValor(2000).gastoVariavelSemanal)
+        val totalVariavel = (1000 + 2000) * SEMANAS_NO_MES
+        val totalFixo = 300 + 400
+        val totalSazonal = 1200 / 12 + 1200 / 24
 
-            assertThat(retrato.totalMensal).isEqualTo((1000 + 2000) * SEMANAS_NO_MES)
-        }
-    }
-
-    @Nested
-    inner class GastosFixos {
-
-        @Test
-        internal fun `total mensal é computado com a soma dos gastos`() {
-            retrato.adicionaGasto(umGasto().comValor(1000).gastoFixo)
-            retrato.adicionaGasto(umGasto().comValor(2000).gastoFixo)
-
-            assertThat(retrato.totalMensal).isEqualTo(1000 + 2000)
-        }
+        assertThat(retrato.totalMensal).isEqualTo(totalVariavel + totalFixo + totalSazonal)
     }
 
 }
