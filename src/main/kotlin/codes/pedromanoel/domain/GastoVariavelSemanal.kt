@@ -2,7 +2,7 @@ package codes.pedromanoel.domain
 
 data class GastoVariavelSemanal(val nome: String, val valor: Int) :
     Gasto {
-    override fun naDataUtilMaisProximaA(semana: Semana) =
+    override fun naDataUtilMaisProximaDaSemana(semana: Semana) =
         Transacao(
             nome,
             semana.inicioDaSemana,

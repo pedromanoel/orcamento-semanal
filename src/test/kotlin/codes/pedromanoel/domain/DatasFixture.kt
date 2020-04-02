@@ -15,8 +15,6 @@ import java.time.YearMonth
 
 val FEV_2020: YearMonth = YearMonth.of(2020, Month.FEBRUARY)
 val MAR_2020: YearMonth = YearMonth.of(2020, Month.MARCH)
+val ABR_2020: YearMonth = YearMonth.of(2020, Month.APRIL)
 
-val MAR_1: LocalDate = MAR_2020.atDay(1)
 val MAR_2: LocalDate = MAR_2020.atDay(2)
-val MAR_8: LocalDate = MAR_2020.atDay(8)
-val MAR_31: LocalDate = MAR_2020.atDay(31)

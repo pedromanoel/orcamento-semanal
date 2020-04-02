@@ -9,7 +9,7 @@ data class GastoFixo(
     val diaDoVencimento: Int
 ) : Gasto {
 
-    override fun naDataUtilMaisProximaA(semana: Semana) =
+    override fun naDataUtilMaisProximaDaSemana(semana: Semana) =
         Transacao(
             nome,
             mesMaisProximo(semana.inicioDaSemana)

@@ -15,7 +15,7 @@ data class Semana(
             .filter { transacao -> dentroDaSemana(transacao.data) }
 
     private fun transacaoPara(it: Gasto) =
-        it.naDataUtilMaisProximaA(this)
+        it.naDataUtilMaisProximaDaSemana(this)
 
     fun dentroDaSemana(data: LocalDate) =
         data >= inicioDaSemana && data < fimDaSemana
