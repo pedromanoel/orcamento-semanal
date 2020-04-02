@@ -21,6 +21,7 @@ dependencies {
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")
     testImplementation("com.konghq:unirest-java:3.7.00")
+    testImplementation("com.thoughtworks.gauge:gauge-java:0.7.4")
 }
 
 tasks.test {
