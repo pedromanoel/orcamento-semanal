@@ -53,6 +53,14 @@ internal class RetratoTest {
                 .extracting("data")
                 .contains(inicioDaSemana)
         }
+
+        @Test
+        internal fun `total mensal é computado somando as semanas`() {
+            retrato.adicionaGasto(GastoVariavelSemanal("Gasto", 1000))
+            retrato.adicionaGasto(GastoVariavelSemanal("Gasto", 2000))
+
+            assertThat(retrato.totalMensal).isEqualTo((1000 + 2000) * SEMANAS_NO_MES)
+        }
     }
 
     @Nested
@@ -94,6 +102,14 @@ internal class RetratoTest {
 
             assertThat(retrato.transacoesDaSemana(MAR_8))
                 .containsExactly(TRANSACAO_6_MAR)
+        }
+
+        @Test
+        internal fun `total mensal é computado com a soma dos gastos`() {
+            retrato.adicionaGasto(GastoFixo("Gasto", 1000, 1))
+            retrato.adicionaGasto(GastoFixo("Gasto", 2000, 28))
+
+            assertThat(retrato.totalMensal).isEqualTo(1000 + 2000)
         }
     }
 

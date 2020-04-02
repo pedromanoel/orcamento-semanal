@@ -5,7 +5,7 @@ import java.time.YearMonth
 
 data class GastoFixo(
     val nome: String,
-    val valor: Long,
+    val valor: Int,
     val diaDoVencimento: Int
 ) : Gasto {
 
@@ -17,6 +17,8 @@ data class GastoFixo(
                 .with(ProximoDiaUtil()),
             valor
         )
+
+    override val totalMensal get() = valor
 
     private fun mesMaisProximo(data: LocalDate) =
         if (data.dayOfMonth > diaDoVencimento)

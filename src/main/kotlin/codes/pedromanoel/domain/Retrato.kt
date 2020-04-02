@@ -3,10 +3,10 @@ package codes.pedromanoel.domain
 import java.time.LocalDate
 
 class Retrato {
+    val totalMensal: Int
+        get() = gastos.sumBy { it.totalMensal }
+
     private val gastos = ArrayList<Gasto>()
-    private val gastosFixos = ArrayList<GastoFixo>()
-    private val gastosVariaveis = ArrayList<GastoVariavelSemanal>()
-    private val gastosSazonais = ArrayList<GastoSazonal>()
 
     fun adicionaGasto(gastoFixo: GastoFixo) =
         gastos.add(gastoFixo)
@@ -19,8 +19,6 @@ class Retrato {
 
     fun limpar() {
         gastos.clear()
-        gastosFixos.clear()
-        gastosVariaveis.clear()
     }
 
 }
