@@ -3,11 +3,10 @@ package codes.pedromanoel.domain.fixture
 import codes.pedromanoel.domain.GastoFixo
 import codes.pedromanoel.domain.GastoSazonal
 import codes.pedromanoel.domain.GastoVariavelSemanal
-import codes.pedromanoel.domain.fixture.GastoFixture.Factory.umGasto
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class GastoFixtureTest {
+internal class GastoBuilderTest {
 
     @Test
     internal fun `cria gasto fixo com valores padrões`() {

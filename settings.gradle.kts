@@ -8,3 +8,4 @@
  */
 
 rootProject.name = "orcamento-semanal"
+include("domain", "app")

@@ -34,7 +34,7 @@ class App(
 
 fun main(args: Array<String>) {
     val config: Configuration = EnvironmentVariables() overriding
-            fromOptionalFile(File("./application.properties"))
+            fromOptionalFile(File("../application.properties"))
 
     val app = App(config)
 
