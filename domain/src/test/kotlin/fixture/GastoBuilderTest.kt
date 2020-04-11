@@ -1,8 +1,8 @@
-package codes.pedromanoel.domain.fixture
+package codes.pedromanoel.orcamento.domain.fixture
 
-import codes.pedromanoel.domain.GastoFixo
-import codes.pedromanoel.domain.GastoSazonal
-import codes.pedromanoel.domain.GastoVariavelSemanal
+import codes.pedromanoel.orcamento.domain.GastoFixo
+import codes.pedromanoel.orcamento.domain.GastoSazonal
+import codes.pedromanoel.orcamento.domain.GastoVariavelSemanal
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -10,19 +10,19 @@ internal class GastoBuilderTest {
 
     @Test
     internal fun `cria gasto fixo com valores padrões`() {
-        assertThat(umGasto().gastoFixo)
+        assertThat(umGasto().fixo)
             .isEqualTo(GastoFixo(NOME, VALOR, DIA_DO_VENCIMENTO))
     }
 
     @Test
     internal fun `cria gasto variável com valores padrões`() {
-        assertThat(umGasto().gastoVariavelSemanal)
+        assertThat(umGasto().variavel)
             .isEqualTo(GastoVariavelSemanal(NOME, VALOR))
     }
 
     @Test
     internal fun `cria gasto sazonal com valores padrões`() {
-        assertThat(umGasto().gastoSazonal)
+        assertThat(umGasto().sazonal)
             .isEqualTo(GastoSazonal(NOME, VALOR, PERIODO_EM_MESES))
     }
 
@@ -33,7 +33,7 @@ internal class GastoBuilderTest {
                 .comNome("Um nome diferente")
                 .comValor(15_00)
                 .noDiaDoVencimento(15)
-                .gastoFixo
+                .fixo
         ).isEqualTo(GastoFixo("Um nome diferente", 15_00, 15))
     }
 
@@ -43,7 +43,7 @@ internal class GastoBuilderTest {
             umGasto()
                 .comNome("Um nome diferente")
                 .comValor(15_00)
-                .gastoVariavelSemanal
+                .variavel
         ).isEqualTo(GastoVariavelSemanal("Um nome diferente", 15_00))
     }
 
@@ -54,7 +54,7 @@ internal class GastoBuilderTest {
                 .comNome("Um nome diferente")
                 .comValor(15_00)
                 .comPeriodoDe(3)
-                .gastoSazonal
+                .sazonal
         ).isEqualTo(GastoSazonal("Um nome diferente", 15_00, 3))
     }
 }

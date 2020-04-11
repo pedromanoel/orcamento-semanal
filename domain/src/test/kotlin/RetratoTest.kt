@@ -1,6 +1,6 @@
-package codes.pedromanoel.domain
+package codes.pedromanoel.orcamento.domain
 
-import codes.pedromanoel.domain.fixture.umGasto
+import codes.pedromanoel.orcamento.domain.fixture.umGasto
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,14 +16,14 @@ internal class RetratoTest {
 
     @Test
     internal fun `total mensal é calculado com gastos fixos, variáveis e sazonais`() {
-        retrato.adicionaGasto(umGasto().comValor(1000).gastoVariavelSemanal)
-        retrato.adicionaGasto(umGasto().comValor(2000).gastoVariavelSemanal)
+        retrato.adicionaGasto(umGasto().comValor(1000).variavel)
+        retrato.adicionaGasto(umGasto().comValor(2000).variavel)
 
-        retrato.adicionaGasto(umGasto().comValor(300).gastoFixo)
-        retrato.adicionaGasto(umGasto().comValor(400).gastoFixo)
+        retrato.adicionaGasto(umGasto().comValor(300).fixo)
+        retrato.adicionaGasto(umGasto().comValor(400).fixo)
 
-        retrato.adicionaGasto(umGasto().comValor(1200).comPeriodoDe(12).gastoSazonal)
-        retrato.adicionaGasto(umGasto().comValor(1200).comPeriodoDe(24).gastoSazonal)
+        retrato.adicionaGasto(umGasto().comValor(1200).comPeriodoDe(12).sazonal)
+        retrato.adicionaGasto(umGasto().comValor(1200).comPeriodoDe(24).sazonal)
 
         val totalVariavel = (1000 + 2000) * SEMANAS_NO_MES
         val totalFixo = 300 + 400

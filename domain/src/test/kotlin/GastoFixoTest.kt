@@ -1,6 +1,6 @@
-package codes.pedromanoel.domain
+package codes.pedromanoel.orcamento.domain
 
-import codes.pedromanoel.domain.fixture.*
+import codes.pedromanoel.orcamento.domain.fixture.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -13,7 +13,7 @@ internal class GastoFixoTest {
         //  24   25   26   27   28   29 |  1
         val dataDaTransacao = umGasto()
             .noDiaDoVencimento(28)
-            .gastoFixo
+            .fixo
             .naDataUtilMaisProximaDaSemana(SEMANA_24_FEV)
             .data
 
@@ -28,7 +28,7 @@ internal class GastoFixoTest {
         //  30   31 |  1    2    3    4    5
         val dataDaTransacao = umGasto()
             .noDiaDoVencimento(28)
-            .gastoFixo
+            .fixo
             .naDataUtilMaisProximaDaSemana(SEMANA_23_MAR)
             .data
 
@@ -43,7 +43,7 @@ internal class GastoFixoTest {
         //  30   31 |  1    2    3    4    5
         val dataDaTransacao = umGasto()
             .noDiaDoVencimento(1)
-            .gastoFixo
+            .fixo
             .naDataUtilMaisProximaDaSemana(SEMANA_23_MAR)
             .data
 
@@ -52,7 +52,7 @@ internal class GastoFixoTest {
 
     @Test
     internal fun `o total do mês é o mesmo que o valor`() {
-        assertThat(umGasto().comValor(101_00).gastoFixo.totalMensal)
+        assertThat(umGasto().comValor(101_00).fixo.totalMensal)
             .isEqualTo(101_00)
     }
 }

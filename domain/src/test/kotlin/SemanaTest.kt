@@ -1,7 +1,7 @@
-package codes.pedromanoel.domain
+package codes.pedromanoel.orcamento.domain
 
-import codes.pedromanoel.domain.fixture.FEV_2020
-import codes.pedromanoel.domain.fixture.MAR_2020
+import codes.pedromanoel.orcamento.domain.fixture.FEV_2020
+import codes.pedromanoel.orcamento.domain.fixture.MAR_2020
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

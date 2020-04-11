@@ -1,6 +1,6 @@
-package codes.pedromanoel.domain
+package codes.pedromanoel.orcamento.domain
 
-import codes.pedromanoel.domain.fixture.umGasto
+import codes.pedromanoel.orcamento.domain.fixture.umGasto
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -24,7 +24,7 @@ internal class GastoVariavelSemanalTest {
         val semana = Semana.daData(inicioDaSemana)
         val gastoVariavelSemanal = umGasto()
             .noDiaDoVencimento(1)
-            .gastoVariavelSemanal
+            .variavel
 
         assertThat(
             gastoVariavelSemanal
@@ -36,7 +36,7 @@ internal class GastoVariavelSemanalTest {
 
     @Test
     internal fun `total mensal é a soma do valor vezes número de semanas`() {
-        assertThat(umGasto().comValor(10_00).gastoVariavelSemanal.totalMensal)
+        assertThat(umGasto().comValor(10_00).variavel.totalMensal)
             .isEqualTo(10_00 * SEMANAS_NO_MES)
     }
 }

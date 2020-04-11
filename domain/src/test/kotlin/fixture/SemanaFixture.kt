@@ -1,6 +1,6 @@
-package codes.pedromanoel.domain.fixture
+package codes.pedromanoel.orcamento.domain.fixture
 
-import codes.pedromanoel.domain.Semana
+import codes.pedromanoel.orcamento.domain.Semana
 
 // Março
 // Seg  Ter  Qua  Qui  Sex  Sab  Dom

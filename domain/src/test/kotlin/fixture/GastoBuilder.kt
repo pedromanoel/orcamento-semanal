@@ -1,8 +1,8 @@
-package codes.pedromanoel.domain.fixture
+package codes.pedromanoel.orcamento.domain.fixture
 
-import codes.pedromanoel.domain.GastoFixo
-import codes.pedromanoel.domain.GastoSazonal
-import codes.pedromanoel.domain.GastoVariavelSemanal
+import codes.pedromanoel.orcamento.domain.GastoFixo
+import codes.pedromanoel.orcamento.domain.GastoSazonal
+import codes.pedromanoel.orcamento.domain.GastoVariavelSemanal
 
 const val NOME = "Gasto"
 const val VALOR = 10_00
@@ -17,9 +17,9 @@ interface GastoBuilder {
     fun noDiaDoVencimento(diaDoVencimento: Int): GastoBuilder
     fun comPeriodoDe(periodoEmMeses: Int): GastoBuilder
 
-    val gastoFixo : GastoFixo
-    val gastoVariavelSemanal : GastoVariavelSemanal
-    val gastoSazonal : GastoSazonal
+    val fixo : GastoFixo
+    val variavel : GastoVariavelSemanal
+    val sazonal : GastoSazonal
 }
 
 private class GastoBuilderImpl : GastoBuilder {
@@ -40,11 +40,11 @@ private class GastoBuilderImpl : GastoBuilder {
     override fun comPeriodoDe(periodoEmMeses: Int) =
         apply { this.periodoEmMeses = periodoEmMeses }
 
-    override val gastoFixo
+    override val fixo
         get() = GastoFixo(nome, valor, diaDoVencimento)
-    override val gastoVariavelSemanal
+    override val variavel
         get() = GastoVariavelSemanal(nome, valor)
-    override val gastoSazonal
+    override val sazonal
         get() = GastoSazonal(nome, valor, periodoEmMeses)
 
 }

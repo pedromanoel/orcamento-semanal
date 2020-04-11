@@ -1,4 +1,4 @@
-package codes.pedromanoel.domain.fixture
+package codes.pedromanoel.orcamento.domain.fixture
 
 import java.time.Month
 import java.time.YearMonth

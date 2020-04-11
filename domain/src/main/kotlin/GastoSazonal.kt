@@ -1,4 +1,4 @@
-package codes.pedromanoel.domain
+package codes.pedromanoel.orcamento.domain
 
 data class GastoSazonal(
     val nome: String,

@@ -1,4 +1,4 @@
-package codes.pedromanoel.domain
+package codes.pedromanoel.orcamento.domain
 
 data class GastoVariavelSemanal(val nome: String, val valor: Int) :
     Gasto {

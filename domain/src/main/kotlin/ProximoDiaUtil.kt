@@ -1,4 +1,4 @@
-package codes.pedromanoel.domain
+package codes.pedromanoel.orcamento.domain
 
 import java.time.DayOfWeek
 import java.time.temporal.ChronoField
