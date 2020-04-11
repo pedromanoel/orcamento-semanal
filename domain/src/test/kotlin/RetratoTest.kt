@@ -1,7 +1,8 @@
 package codes.pedromanoel.orcamento.domain
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import codes.pedromanoel.orcamento.domain.fixture.umGasto
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

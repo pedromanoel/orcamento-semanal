@@ -1,8 +1,10 @@
 package codes.pedromanoel.orcamento.domain
 
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.isEqualTo
 import codes.pedromanoel.orcamento.domain.fixture.FEV_2020
 import codes.pedromanoel.orcamento.domain.fixture.MAR_2020
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 internal class SemanaTest {

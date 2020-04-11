@@ -1,9 +1,10 @@
 package codes.pedromanoel.orcamento.domain.fixture
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import codes.pedromanoel.orcamento.domain.GastoFixo
 import codes.pedromanoel.orcamento.domain.GastoSazonal
 import codes.pedromanoel.orcamento.domain.GastoVariavelSemanal
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 internal class GastoBuilderTest {
