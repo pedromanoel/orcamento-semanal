@@ -3,10 +3,10 @@ package codes.pedromanoel.orcamento.domain.usecases
 import codes.pedromanoel.orcamento.domain.*
 
 class ApresentarResumoDoRetrato(
-        private val retratoRepository: RetratoRepository,
+        private val gastoRepository: GastoRepository,
         private val retratoConfig: RetratoConfiguration) {
     fun obterResumo(): ResumoDoRetrato {
-        val gastosPorTipo = retratoRepository
+        val gastosPorTipo = gastoRepository
                 .listaTodos()
                 .groupBy { it::class }
                 .mapValues { (_, gastos) ->
