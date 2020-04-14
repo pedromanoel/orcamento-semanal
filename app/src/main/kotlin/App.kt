@@ -6,25 +6,27 @@ package codes.pedromanoel.orcamento.app
 import com.natpryce.konfig.*
 import com.natpryce.konfig.ConfigurationProperties.Companion.fromOptionalFile
 import io.javalin.Javalin
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
 import java.io.File
 
 class App(
-    private val config: Configuration
+        private val config: Configuration
 ) {
     private val server: Javalin = Javalin.create()
 
     private val port =
-        Key("port", intType)
+            Key("port", intType)
     private val showJavalinBanner =
-        Key("javalin.show-javalin-banner", booleanType)
+            Key("javalin.show-javalin-banner", booleanType)
 
     fun start() {
         server.config.showJavalinBanner = config[showJavalinBanner]
         server
-            .get("/") { ctx ->
-                ctx.render("home.peb")
-            }
-            .start(config[port])
+                .get("/") { ctx ->
+                    ctx.render("home.peb")
+                }
+                .start(config[port])
     }
 
     fun stop() {
@@ -32,11 +34,20 @@ class App(
     }
 }
 
-fun main(args: Array<String>) {
-    val config: Configuration = EnvironmentVariables() overriding
-            fromOptionalFile(File("../application.properties"))
+val appModule = module {
+    single { Javalin.create() }
+    single {
+        EnvironmentVariables() overriding
+                fromOptionalFile(File("../application.properties"))
+    }
+    single { App(get()) }
+}
 
-    val app = App(config)
+fun main(args: Array<String>) {
+    val app = startKoin {
+        printLogger()
+        modules(appModule)
+    }.koin.get<App>()
 
     shutdownHook {
         app.stop()

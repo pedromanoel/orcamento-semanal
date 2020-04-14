@@ -5,11 +5,13 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":domain"))
+
     implementation("com.natpryce:konfig:1.6.10.0")
     implementation("io.javalin:javalin:3.7.0")
     implementation("io.pebbletemplates:pebble:3.1.2")
     implementation("org.slf4j:slf4j-simple:1.7.28")
-    implementation(project(":domain"))
+    implementation("org.koin:koin-core:2.1.5")
 
     testImplementation("org.assertj:assertj-core:3.15.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")
@@ -26,5 +28,5 @@ tasks.test {
 }
 
 application {
-    mainClassName = "codes.pedromanoel.AppKt"
+    mainClassName = "codes.pedromanoel.orcamento.app.AppKt"
 }
