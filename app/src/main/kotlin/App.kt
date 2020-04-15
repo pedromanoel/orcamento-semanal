@@ -7,24 +7,18 @@ import io.javalin.Javalin
 
 class App(appConfiguration: AppConfiguration) {
     private val config = appConfiguration
-    private val server: Javalin = Javalin.create()
+    private val javalin = Javalin
+            .create(config::applyTo)
+            .get("/") { ctx ->
+                ctx.render("home.peb")
+            }
 
     fun start() {
-        server.get("/") { ctx ->
-            ctx.render("home.peb")
-        }
-
-        config.showJavalinBanner?.let {
-            server.config.showJavalinBanner = it
-        }
-
-        config.port
-                ?.let { server.start(it) }
-                ?: start()
+        config.useToStart(javalin)
     }
 
     fun stop() {
-        server.stop()
+        javalin.stop()
     }
 }
 
