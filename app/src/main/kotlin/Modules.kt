@@ -13,5 +13,6 @@ val appModule = module {
         EnvironmentVariables() overriding
                 ConfigurationProperties.fromOptionalFile(File("../application.properties"))
     }
+    single { AppConfiguration(get())}
     single { App(get()) }
 }

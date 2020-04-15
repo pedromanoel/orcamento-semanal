@@ -3,28 +3,24 @@
  */
 package codes.pedromanoel.orcamento.app
 
-import com.natpryce.konfig.Configuration
-import com.natpryce.konfig.Key
-import com.natpryce.konfig.booleanType
-import com.natpryce.konfig.intType
 import io.javalin.Javalin
 
-class App(private val config: Configuration) {
+class App(appConfiguration: AppConfiguration) {
+    private val config = appConfiguration
     private val server: Javalin = Javalin.create()
 
-    private val port =
-            Key("port", intType)
-    private val showJavalinBanner =
-            Key("javalin.show-javalin-banner", booleanType)
-
     fun start() {
-        server.config.showJavalinBanner = config[showJavalinBanner]
-        server.port()
-        server
-                .get("/") { ctx ->
-                    ctx.render("home.peb")
-                }
-                .start(config[port])
+        server.get("/") { ctx ->
+            ctx.render("home.peb")
+        }
+
+        config.showJavalinBanner?.let {
+            server.config.showJavalinBanner = it
+        }
+
+        config.port
+                ?.let { server.start(it) }
+                ?: start()
     }
 
     fun stop() {

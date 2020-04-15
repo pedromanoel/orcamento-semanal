@@ -17,7 +17,7 @@ class AppTest {
         "javalin.show-javalin-banner" to "false"
     )
 
-    private val app = App(config)
+    private val app = App(AppConfiguration(config))
 
     @BeforeAll
     internal fun setUp() {

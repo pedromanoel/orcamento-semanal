@@ -14,6 +14,7 @@ dependencies {
     implementation("org.koin:koin-core:2.1.5")
 
     testImplementation("org.assertj:assertj-core:3.15.0")
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.22")
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("com.konghq:unirest-java:3.7.00")
