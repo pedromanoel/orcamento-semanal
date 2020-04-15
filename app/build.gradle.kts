@@ -28,5 +28,5 @@ tasks.test {
 }
 
 application {
-    mainClassName = "codes.pedromanoel.orcamento.app.AppKt"
+    mainClassName = "codes.pedromanoel.orcamento.app.MainKt"
 }

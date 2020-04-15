@@ -3,16 +3,13 @@
  */
 package codes.pedromanoel.orcamento.app
 
-import com.natpryce.konfig.*
-import com.natpryce.konfig.ConfigurationProperties.Companion.fromOptionalFile
+import com.natpryce.konfig.Configuration
+import com.natpryce.konfig.Key
+import com.natpryce.konfig.booleanType
+import com.natpryce.konfig.intType
 import io.javalin.Javalin
-import org.koin.core.context.startKoin
-import org.koin.dsl.module
-import java.io.File
 
-class App(
-        private val config: Configuration
-) {
+class App(private val config: Configuration) {
     private val server: Javalin = Javalin.create()
 
     private val port =
@@ -22,6 +19,7 @@ class App(
 
     fun start() {
         server.config.showJavalinBanner = config[showJavalinBanner]
+        server.port()
         server
                 .get("/") { ctx ->
                     ctx.render("home.peb")
@@ -34,28 +32,3 @@ class App(
     }
 }
 
-val appModule = module {
-    single { Javalin.create() }
-    single {
-        EnvironmentVariables() overriding
-                fromOptionalFile(File("../application.properties"))
-    }
-    single { App(get()) }
-}
-
-fun main(args: Array<String>) {
-    val app = startKoin {
-        printLogger()
-        modules(appModule)
-    }.koin.get<App>()
-
-    shutdownHook {
-        app.stop()
-    }
-
-    app.start()
-}
-
-private fun shutdownHook(shutdownCallback: () -> Unit) {
-    Runtime.getRuntime().addShutdownHook(Thread(shutdownCallback))
-}
