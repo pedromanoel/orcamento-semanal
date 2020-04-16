@@ -9,12 +9,11 @@ import assertk.assertions.contains
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import codes.pedromanoel.orcamento.domain.GastoFixo
+import codes.pedromanoel.orcamento.domain.GastoSazonal
+import codes.pedromanoel.orcamento.domain.GastoVariavelSemanal
 import codes.pedromanoel.orcamento.domain.usecases.CadastrarGastos
 import com.natpryce.konfig.ConfigurationMap
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.reset
-import com.nhaarman.mockitokotlin2.validateMockitoUsage
-import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.*
 import kong.unirest.ContentType.APPLICATION_JSON
 import kong.unirest.HeaderNames
 import kong.unirest.Unirest
@@ -75,13 +74,9 @@ class AppTest {
                 .header(HeaderNames.ACCEPT, APPLICATION_JSON.toString())
                 // language=json
                 .body("""{
-  "fixos": [
-    {
-      "nome": "Luz",
-      "valor": 43.50,
-      "vencimento": 10
-    }
-  ]
+  "fixos": [{"nome": "Luz", "valor": 43.50, "vencimento": 10}],
+  "variaveis": [{"nome": "Mercado", "valor": 50}],
+  "sazonais": [{"nome":  "IPVA", "valor": 1500, "periodoEmMeses": 12}]
 }
 """).asString()
 
@@ -91,5 +86,7 @@ class AppTest {
         }
 
         verify(cadastrarGastos).adicionarGasto(GastoFixo("Luz", 43_50, 10))
+        verify(cadastrarGastos).adicionarGasto(GastoVariavelSemanal("Mercado", 50_00))
+        verify(cadastrarGastos).adicionarGasto(GastoSazonal("IPVA", 1500_00, 12))
     }
 }

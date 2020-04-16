@@ -3,7 +3,10 @@
  */
 package codes.pedromanoel.orcamento.app
 
+import codes.pedromanoel.orcamento.domain.Gasto
 import codes.pedromanoel.orcamento.domain.GastoFixo
+import codes.pedromanoel.orcamento.domain.GastoSazonal
+import codes.pedromanoel.orcamento.domain.GastoVariavelSemanal
 import codes.pedromanoel.orcamento.domain.usecases.CadastrarGastos
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
@@ -21,9 +24,7 @@ class App(
                 path("retrato") {
                     path("gastos") {
                         post {
-                            it.criaGastosRequest().fixos.map(GastoFixoRequest::gastoFixo).forEach { gastoFixo ->
-                                cadastrarGastos.adicionarGasto(gastoFixo)
-                            }
+                            it.gastos.forEach(cadastrarGastos::adicionarGasto)
                             it.status(201)
                         }
                     }
@@ -39,18 +40,34 @@ class App(
     }
 }
 
-private fun Context.criaGastosRequest() =
-        bodyAsClass(CadastraGastosRequest::class.java)
+private val Context.gastos get() = bodyAsClass(CadastraGastosRequest::class.java).gastos
 
 data class CadastraGastosRequest(
-        val fixos: List<GastoFixoRequest>
-)
-
-data class GastoFixoRequest(
-        val nome: String,
-        val valor: BigDecimal,
-        val vencimento: Int
+        val fixos: List<GastoFixoRequest>,
+        val variaveis: List<GastoVariavelRequest>,
+        val sazonais: List<GastoSazonalRequest>
 ) {
-    val gastoFixo: GastoFixo
+    val gastos
+        get() = listOf(fixos, variaveis, sazonais)
+                .flatten()
+                .map(GastoRequest::toDomain)
+}
+
+interface GastoRequest {
+    val toDomain: Gasto
+}
+
+data class GastoFixoRequest(val nome: String, val valor: BigDecimal, val vencimento: Int) : GastoRequest {
+    override val toDomain: Gasto
         get() = GastoFixo(nome, valor.setScale(2).unscaledValue().intValueExact(), vencimento)
+}
+
+data class GastoVariavelRequest(val nome: String, val valor: BigDecimal) : GastoRequest {
+    override val toDomain: Gasto
+        get() = GastoVariavelSemanal(nome, valor.setScale(2).unscaledValue().intValueExact())
+}
+
+data class GastoSazonalRequest(val nome: String, val valor: BigDecimal, val periodoEmMeses: Int) : GastoRequest {
+    override val toDomain: Gasto
+        get() = GastoSazonal(nome, valor.setScale(2).unscaledValue().intValueExact(), periodoEmMeses)
 }
