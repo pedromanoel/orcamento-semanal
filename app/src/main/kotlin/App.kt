@@ -3,19 +3,19 @@
  */
 package codes.pedromanoel.orcamento.app
 
-import codes.pedromanoel.orcamento.domain.Gasto
-import codes.pedromanoel.orcamento.domain.GastoFixo
-import codes.pedromanoel.orcamento.domain.GastoSazonal
-import codes.pedromanoel.orcamento.domain.GastoVariavelSemanal
+import codes.pedromanoel.orcamento.domain.*
+import codes.pedromanoel.orcamento.domain.usecases.ApresentarResumoDoRetrato
 import codes.pedromanoel.orcamento.domain.usecases.CadastrarGastos
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.http.Context
+import org.koin.core.context.startKoin
 import java.math.BigDecimal
 
 class App(
         private val config: AppConfiguration,
-        private val cadastrarGastos: CadastrarGastos
+        private val cadastrarGastos: CadastrarGastos,
+        private val apresentarResumoDoRetrato: ApresentarResumoDoRetrato
 ) {
     private val javalin = Javalin
             .create(this.config::applyTo)
@@ -37,6 +37,15 @@ class App(
 
     fun stop() {
         javalin.stop()
+    }
+
+    companion object {
+        fun create(): App {
+            return startKoin {
+                printLogger()
+                modules(appModule)
+            }.koin.get()
+        }
     }
 }
 

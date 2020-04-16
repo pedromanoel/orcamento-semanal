@@ -5,12 +5,13 @@ package codes.pedromanoel.orcamento.app
 
 import assertk.assertAll
 import assertk.assertThat
-import assertk.assertions.contains
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import codes.pedromanoel.orcamento.domain.GastoFixo
 import codes.pedromanoel.orcamento.domain.GastoSazonal
 import codes.pedromanoel.orcamento.domain.GastoVariavelSemanal
+import codes.pedromanoel.orcamento.domain.ResumoDoRetrato
+import codes.pedromanoel.orcamento.domain.usecases.ApresentarResumoDoRetrato
 import codes.pedromanoel.orcamento.domain.usecases.CadastrarGastos
 import com.natpryce.konfig.ConfigurationMap
 import com.nhaarman.mockitokotlin2.*
@@ -30,11 +31,16 @@ class AppTest {
     )
 
     private val cadastrarGastos = mock<CadastrarGastos>()
+    private val apresentarResumoDoRetrato = mock<ApresentarResumoDoRetrato>()
 
-    private val app = App(AppConfiguration(config), cadastrarGastos)
+    private val app = App(AppConfiguration(config), cadastrarGastos, apresentarResumoDoRetrato)
 
     @BeforeAll
     internal fun startApp() {
+        Unirest.config()
+                .setDefaultHeader(HeaderNames.ACCEPT, APPLICATION_JSON.toString())
+                .defaultBaseUrl(BASE_URL)
+
         app.start()
     }
 
@@ -54,24 +60,13 @@ class AppTest {
     }
 
     @Test
-    fun `inicia o servidor na porta especificada na configuração`() {
-        val response = Unirest.get(BASE_URL).asString()
-
-        assertThat(response.status).isEqualTo(200)
+    internal fun `cria a aplicação com sucesso`() {
+        App.create()
     }
 
     @Test
-    internal fun `renderiza home page`() {
-        val response = Unirest.get(BASE_URL).asString()
-
-        assertThat(response.body).contains("<title>Orçamento Semanal")
-    }
-
-    @Test
-    internal fun `cadastra um gasto fixo`() {
-        val response = Unirest
-                .post("$BASE_URL/retrato/gastos")
-                .header(HeaderNames.ACCEPT, APPLICATION_JSON.toString())
+    internal fun `cadastra gastos`() {
+        val response = Unirest.post("/retrato/gastos")
                 // language=json
                 .body("""{
   "fixos": [{"nome": "Luz", "valor": 43.50, "vencimento": 10}],
@@ -88,5 +83,23 @@ class AppTest {
         verify(cadastrarGastos).adicionarGasto(GastoFixo("Luz", 43_50, 10))
         verify(cadastrarGastos).adicionarGasto(GastoVariavelSemanal("Mercado", 50_00))
         verify(cadastrarGastos).adicionarGasto(GastoSazonal("IPVA", 1500_00, 12))
+    }
+
+    @Test
+    @Disabled
+    internal fun `mostra resumo do retrato`() {
+        whenever(apresentarResumoDoRetrato.obterResumo())
+                .thenReturn(ResumoDoRetrato(1000, 1200, 120, 0.15))
+
+        val response = Unirest.post("/retrato/resumo").asString()
+
+        assertAll {
+            assertThat(response.status).isEqualTo(200)
+            assertThat(response.body).isEqualTo(
+                    """
+{"totalFixos": 10.00, "totalVariavelMensal": 12.00, }
+"""
+            )
+        }
     }
 }
