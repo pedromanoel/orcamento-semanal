@@ -3,14 +3,31 @@
  */
 package codes.pedromanoel.orcamento.app
 
+import codes.pedromanoel.orcamento.domain.GastoFixo
+import codes.pedromanoel.orcamento.domain.usecases.CadastrarGastos
 import io.javalin.Javalin
+import io.javalin.apibuilder.ApiBuilder.*
+import io.javalin.http.Context
+import java.math.BigDecimal
 
-class App(appConfiguration: AppConfiguration) {
-    private val config = appConfiguration
+class App(
+        private val config: AppConfiguration,
+        private val cadastrarGastos: CadastrarGastos
+) {
     private val javalin = Javalin
-            .create(config::applyTo)
-            .get("/") { ctx ->
-                ctx.render("home.peb")
+            .create(this.config::applyTo)
+            .routes {
+                get { it.render("home.peb") }
+                path("retrato") {
+                    path("gastos") {
+                        post {
+                            it.criaGastosRequest().fixos.map(GastoFixoRequest::gastoFixo).forEach { gastoFixo ->
+                                cadastrarGastos.adicionarGasto(gastoFixo)
+                            }
+                            it.status(201)
+                        }
+                    }
+                }
             }
 
     fun start() {
@@ -22,3 +39,18 @@ class App(appConfiguration: AppConfiguration) {
     }
 }
 
+private fun Context.criaGastosRequest() =
+        bodyAsClass(CadastraGastosRequest::class.java)
+
+data class CadastraGastosRequest(
+        val fixos: List<GastoFixoRequest>
+)
+
+data class GastoFixoRequest(
+        val nome: String,
+        val valor: BigDecimal,
+        val vencimento: Int
+) {
+    val gastoFixo: GastoFixo
+        get() = GastoFixo(nome, valor.setScale(2).unscaledValue().intValueExact(), vencimento)
+}

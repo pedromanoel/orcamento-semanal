@@ -3,43 +3,93 @@
  */
 package codes.pedromanoel.orcamento.app
 
+import assertk.assertAll
+import assertk.assertThat
+import assertk.assertions.contains
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import codes.pedromanoel.orcamento.domain.GastoFixo
+import codes.pedromanoel.orcamento.domain.usecases.CadastrarGastos
 import com.natpryce.konfig.ConfigurationMap
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.reset
+import com.nhaarman.mockitokotlin2.validateMockitoUsage
+import com.nhaarman.mockitokotlin2.verify
+import kong.unirest.ContentType.APPLICATION_JSON
+import kong.unirest.HeaderNames
 import kong.unirest.Unirest
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 
 private const val PORT_NUMBER = "3000"
+private const val BASE_URL = "http://localhost:$PORT_NUMBER"
 
 class AppTest {
 
     private val config = ConfigurationMap(
-        "port" to PORT_NUMBER,
-        "javalin.show-javalin-banner" to "false"
+            "port" to PORT_NUMBER,
+            "javalin.show-javalin-banner" to "false"
     )
 
-    private val app = App(AppConfiguration(config))
+    private val cadastrarGastos = mock<CadastrarGastos>()
+
+    private val app = App(AppConfiguration(config), cadastrarGastos)
 
     @BeforeAll
-    internal fun setUp() {
+    internal fun startApp() {
         app.start()
     }
 
     @AfterAll
-    internal fun tearDown() {
+    internal fun stopApp() {
         app.stop()
+    }
+
+    @BeforeEach
+    internal fun setUp() {
+        reset(cadastrarGastos)
+    }
+
+    @AfterEach
+    internal fun tearDown() {
+        validateMockitoUsage()
     }
 
     @Test
     fun `inicia o servidor na porta especificada na configuração`() {
-        val response = Unirest.get("http://localhost:$PORT_NUMBER").asString()
+        val response = Unirest.get(BASE_URL).asString()
 
         assertThat(response.status).isEqualTo(200)
     }
 
     @Test
     internal fun `renderiza home page`() {
-        val response = Unirest.get("http://localhost:$PORT_NUMBER").asString()
+        val response = Unirest.get(BASE_URL).asString()
 
         assertThat(response.body).contains("<title>Orçamento Semanal")
+    }
+
+    @Test
+    internal fun `cadastra um gasto fixo`() {
+        val response = Unirest
+                .post("$BASE_URL/retrato/gastos")
+                .header(HeaderNames.ACCEPT, APPLICATION_JSON.toString())
+                // language=json
+                .body("""{
+  "fixos": [
+    {
+      "nome": "Luz",
+      "valor": 43.50,
+      "vencimento": 10
+    }
+  ]
+}
+""").asString()
+
+        assertAll {
+            assertThat(response.body).isEmpty()
+            assertThat(response.status).isEqualTo(201)
+        }
+
+        verify(cadastrarGastos).adicionarGasto(GastoFixo("Luz", 43_50, 10))
     }
 }

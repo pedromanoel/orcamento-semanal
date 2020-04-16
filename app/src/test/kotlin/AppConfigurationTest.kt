@@ -7,10 +7,10 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.natpryce.konfig.ConfigurationMap
 import com.natpryce.konfig.EmptyConfiguration
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
 import io.javalin.Javalin
 import io.javalin.core.JavalinConfig
-import io.mockk.mockk
-import io.mockk.verify
 import org.junit.jupiter.api.Test
 
 private const val PORT_NUMBER = "1234"
@@ -58,11 +58,11 @@ internal class AppConfigurationTest {
 
     @Test
     internal fun `usa config para iniciar javalin com a porta correta`() {
-        val javalin = mockk<Javalin>(relaxed = true)
+        val javalin = mock<Javalin>()
         val config = ConfigurationMap("port" to PORT_NUMBER)
 
         AppConfiguration(config).useToStart(javalin)
 
-        verify { javalin.start(PORT_NUMBER.toInt()) }
+        verify(javalin).start(PORT_NUMBER.toInt())
     }
 }
